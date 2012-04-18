@@ -10,7 +10,7 @@ function unmap {
 }
 
 function toggle {
-    is_mapped=$(xdotool search --onlyvisible --name $wmname 2> /dev/null)
+    is_mapped=$(xdotool search --onlyvisible --name "^$wmname\$" 2> /dev/null)
     
     if [[ -z $is_mapped ]]; then
         map
@@ -23,7 +23,7 @@ function waitwid {
 
     # wait until the window has been created
     until [[ ! -z $wid ]]; do
-        wid=$(xdotool search -name $wmname 2> /dev/null)
+        wid=$(xdotool search -name "^$wmname\$" 2> /dev/null)
     done
 
     # map and focus
@@ -56,7 +56,7 @@ done
 
 [[ -z $wmname || -z $command ]] && usage
 
-wid=$(xdotool search -name $wmname 2> /dev/null)
+wid=$(xdotool search -name "^$wmname\$" 2> /dev/null)
 
 if [[ -z $wid ]]; then
     
