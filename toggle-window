@@ -36,7 +36,7 @@ function waitwid {
 }
 
 function usage {
-    echo "Usage: $0 -n <wm_name> -c <command> [-i <initial>]"
+    echo "Usage: $(basename $0) -n <wm_name> -c <command> [-i <initial>]"
     echo
     echo "  wm_name : The WM_NAME of the window to toggle"
     echo "  command : The command creating the window to be toggled" 
