@@ -1,0 +1,14 @@
+#!/bin/sh
+
+OS="$(uname -s)"
+
+[ "$OS" = "Linux" ] && alias fct="readlink -f"
+[ "$OS" = "Darwin" ] && alias fct="python -c 'import os, sys; print os.path.realpath(sys.argv[1])'"
+
+
+if ! alias fct >>/dev/null 2>&1; then
+    echo "Not implemented for OS \"$OS\""
+    exit 1
+fi
+
+echo $(fct "$1")
