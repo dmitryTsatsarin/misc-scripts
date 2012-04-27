@@ -61,7 +61,7 @@ wid=$(xdotool search -name "^$wmname\$" 2> /dev/null)
 if [[ -z $wid ]]; then
     
     # run the command
-    $command &
+    eval $command &
     
     # run init command
     if [[ -n $init_command ]]; then
