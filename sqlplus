@@ -1,0 +1,4 @@
+#!/bin/bash
+
+SQLPLUS_DIR=/usr/local/oracle/instantclient_10_2
+DYLD_LIBRARY_PATH=$SQLPLUS_DIR:$DYLD_LIBRARY_PATH $SQLPLUS_DIR/sqlplus -S $@
