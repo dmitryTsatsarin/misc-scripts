@@ -1,19 +1,23 @@
 #!/bin/sh
 
-#
-# Change the author name and/or email of a single commit.
-#
-# change-author [-f] commit-to-change [branch-to-rewrite [new-name [new-email]]]
-#
-#     If -f is supplied it is passed to "git filter-branch".
-#
-#     If <branch-to-rewrite> is not provided or is empty HEAD will be used.
-#     Use "--all" or a space separated list (e.g. "master next") to rewrite
-#     multiple branches.
-#
-#     If <new-name> (or <new-email>) is not provided or is empty, the normal
-#     user.name (user.email) Git configuration value will be used.
-#
+# Inspired by a post on StackOverflow by Chris Johnsen:
+# http://stackoverflow.com/a/3042706
+
+if test "x$1" = "x" -o "x$1" = "x-h" -o "x$1" = "x--help"; then
+    echo 'Change the author name and/or email of a single commit.
+
+change-author [-f] commit-to-change [branch-to-rewrite [new-name [new-email]]]
+
+    If -f is supplied it is passed to "git filter-branch".
+
+    If <branch-to-rewrite> is not provided or is empty HEAD will be used.
+    Use "--all" or a space separated list (e.g. "master next") to rewrite
+    multiple branches.
+
+    If <new-name> (or <new-email>) is not provided or is empty, the normal
+    user.name (user.email) Git configuration value will be used.'
+    exit 1
+fi
 
 force=''
 if test "x$1" = "x-f"; then
@@ -25,7 +29,7 @@ die() {
     printf '%s\n' "$@"
     exit 128
 }
-targ="$(git rev-parse --verify "$1" 2>/dev/null)" || die "$1 is not a commit"
+targ="$(git rev-parse --verify "$1" 2>/dev/null)" || die "'$1' is not a commit"
 br="${2:-HEAD}"
 
 TARG_COMMIT="$targ"
