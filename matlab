@@ -9,6 +9,7 @@ export XAPPLRESDIR=$MATLABROOT/X11/app-defaults
 
 MATLAB_BIN=$MATLABROOT/bin/matlab
 MLINT_BIN=$MATLABROOT/bin/maci64/mlint
+MEX_BIN=$MATLABROOT/bin/mex
 
 # check which program to call
 SCRIPT_NAME=$(basename "$0")
@@ -20,6 +21,9 @@ elif [ "$SCRIPT_NAME" = "matlab-nw" ]; then
     TARGET_ARGS='-nodesktop -nosplash'
 elif [ "$SCRIPT_NAME" = "mlint" ]; then
     TARGET_BIN=$MLINT_BIN
+    TARGET_ARGS=
+elif [ "$SCRIPT_NAME" = "mex" ]; then
+    TARGET_BIN=$MEX_BIN
     TARGET_ARGS=
 else
     echo "Script must be named matlab, matlab-nw or mlint."
