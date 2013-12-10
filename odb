@@ -1,0 +1,2 @@
+#!/bin/bash
+/opt/odb-2.3.0-i686-macosx/bin/odb $@
