@@ -1,0 +1,2 @@
+printf "[%dm%d dark[0m  [%d;1m%d bold[0m
+" {30..37}{,,,}
