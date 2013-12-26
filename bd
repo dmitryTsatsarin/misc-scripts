@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Search in braindumps
+
+if [ $# = 0 ]
+then
+    echo "Please provide a search term." >&2
+    echo "USAGE: $(basename $0) term1 [term2 [term3 ...]]" >&2
+    exit 1
+fi
+
+if [ -z "${BRAINDUMP_DIR}" ]
+then
+    echo "$(basename $0): please set \$BRAINDUMP_DIR to the directory holding your braindump files." >&2
+    exit 2
+fi
+
+search_file()
+{
+    gawk '
+        BEGIN {
+            RS = "^";
+            FS = "^";
+            OFS = "";
+            ORS = "";
+            IGNORECASE = 1;
+            retcode = 1;
+        }
+
+        # store the current record in `braindump`
+        # prepend filename to current record so that it gets matched as well
+        {
+            braindump = $0;
+            $0 = FILENAME "\n" $0;
+        }
+
+        '"$PATTERN"' {
+            retcode = 0;
+            print "===\n>>> " FILENAME "\n===\n";
+            print braindump "\n";
+        }
+
+        END {
+            exit retcode;
+        }
+    ' $1
+}
+
+if [ "x$PWD" != "x${BRAINDUMP_DIR}" ]
+then
+    NEED_POPD=true
+    pushd "${BRAINDUMP_DIR}" >/dev/null
+fi
+ 
+PATTERN="/$1/$(printf ' && /%s/' "${@:2}")"
+RET=1
+
+while IFS= read -d $'\0' -r file; do
+    search_file $(basename $file) && RET=0
+done < <(find . -type f \( -name '*.txt' -o -name '*.md' \) -print0)
+
+if [ "x$NEED_POPD" != "x" ]
+then
+    popd >/dev/null
+fi
+
+exit $RET
